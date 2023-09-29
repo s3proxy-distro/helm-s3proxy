@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "s3proxy.fullname" . }}-test-connection"
+  labels:
+    {{- include "s3proxy.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}']
+      podSecurityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: "OnRootMismatch"
+
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+  restartPolicy: Never

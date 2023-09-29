@@ -12,4 +12,16 @@ spec:
       image: busybox
       command: ['wget']
       args: ['{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}']
+      podSecurityContext:
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        fsGroupChangePolicy: "OnRootMismatch"
+
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
   restartPolicy: Never

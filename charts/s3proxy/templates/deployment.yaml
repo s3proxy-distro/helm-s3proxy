@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "s3proxy.fullname" . }}
+  labels:
+    {{- include "s3proxy.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "s3proxy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "s3proxy.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "s3proxy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: S3PROXY_ENDPOINT
+              value: "http://0.0.0.0:{{ .Values.service.port }}"
+            - name: S3PROXY_IDENTITY
+              valueFrom:
+                secretKeyRef:
+      {{- if empty .Values.existingSecretName }}
+                  name: "{{ include "s3proxy.fullname" . }}-secret"
+      {{- else }}
+                  name: {{ .Values.existingSecretName }}
+      {{- end }}
+                  key: AWS_ACCESS_KEY_ID
+                  optional: false 
+            - name: S3PROXY_CREDENTIAL
+              valueFrom:
+                secretKeyRef:
+      {{- if empty .Values.existingSecretName }}
+                  name: "{{ include "s3proxy.fullname" . }}-secret"
+      {{- else }}
+                  name: {{ .Values.existingSecretName }}
+      {{- end }}
+                  key: AWS_SECRET_ACCESS_KEY
+                  optional: false       
+      {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+      {{- end }}              
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

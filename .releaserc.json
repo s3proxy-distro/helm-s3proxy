@@ -1,0 +1,47 @@
+{
+    "branches": [
+        {
+            "name": "main",
+            "prerelease": false
+        },
+        {
+            "name": "releases/+([0-9])?(\\.\\d+)(\\.\\d+|z|$)",
+            "prerelease": false
+        },
+        {
+            "name": "next",
+            "prerelease": true
+        },
+        {
+            "name": "next-major",
+            "prerelease": true
+        }
+    ],
+    "plugins": [
+        [
+            "@semantic-release/commit-analyzer",
+            {
+                "preset": "conventionalcommits"
+            }
+        ],
+        [
+            "@semantic-release/git",
+            {
+                "assets": [
+                    "chart/Chart.yaml"
+                ],
+                "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+            }
+        ],
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    {
+                        "path": "*.tgz"
+                    }
+                ]
+            }
+        ]
+    ]
+}

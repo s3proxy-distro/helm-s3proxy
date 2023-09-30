@@ -26,4 +26,4 @@ sources:
   - https://github.com/s3proxy-distro/helm-s3proxy
   - https://github.com/s3proxy-distro/container-s3proxy
 maintainers:
-  - name: Ryan Faircloth
+  - name: ryanfaircloth

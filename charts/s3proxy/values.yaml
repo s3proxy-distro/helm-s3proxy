@@ -30,7 +30,9 @@ podSecurityContext:
   runAsGroup: 10001
   fsGroup: 10001
   fsGroupChangePolicy: "OnRootMismatch"
-
+  seccompProfile:
+    type: RuntimeDefault
+  runAsNonRoot: true
 securityContext:
   capabilities:
     drop:

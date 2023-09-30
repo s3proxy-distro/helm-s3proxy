@@ -7,21 +7,33 @@ metadata:
   annotations:
     "helm.sh/hook": test
 spec:
+  automountServiceAccountToken: false
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault  
   containers:
     - name: wget
-      image: busybox
+      image: busybox:1.36
       command: ['wget']
       args: ['{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}']
-      podSecurityContext:
+
+      securityContext:
         runAsUser: 10001
         runAsGroup: 10001
         fsGroup: 10001
         fsGroupChangePolicy: "OnRootMismatch"
-
-      securityContext:
         capabilities:
           drop:
             - ALL
+        runAsNonRoot: true
         readOnlyRootFilesystem: true
         allowPrivilegeEscalation: false
+        seccompProfile:
+          type: RuntimeDefault
   restartPolicy: Never

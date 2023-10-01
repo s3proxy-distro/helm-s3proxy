@@ -21,7 +21,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "s3proxy-2.1.0_1.0.0"
+appVersion: "s3proxy-2.1.1_1.1.0"
 sources:
   - https://github.com/s3proxy-distro/helm-s3proxy
   - https://github.com/s3proxy-distro/container-s3proxy

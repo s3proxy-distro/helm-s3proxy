@@ -36,32 +36,32 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LOG_LEVEL
-              value: debug
+              value: {{ .Values.logLevel | default "info" }}
             - name: S3PROXY_ENDPOINT
               value: "http://0.0.0.0:{{ .Values.service.port }}"
             - name: S3PROXY_IDENTITY
               valueFrom:
                 secretKeyRef:
                   {{- if empty .Values.existingSecretName }}
-                  name: "{{ include "s3proxy.fullname" . }}-secret"
+                  name: "{{ include "s3proxy.fullname" . }}-awsclient"
                   {{- else }}
                   name: {{ .Values.existingSecretName }}
                   {{- end }}
                   key: AWS_ACCESS_KEY_ID
-                  optional: false 
+                  optional: false
             - name: S3PROXY_CREDENTIAL
               valueFrom:
                 secretKeyRef:
                   {{- if empty .Values.existingSecretName }}
-                  name: "{{ include "s3proxy.fullname" . }}-secret"
+                  name: "{{ include "s3proxy.fullname" . }}-awsclient"
                   {{- else }}
                   name: {{ .Values.existingSecretName }}
                   {{- end }}
                   key: AWS_SECRET_ACCESS_KEY
-                  optional: false       
+                  optional: false
             {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
-            {{- end }}              
+            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -76,17 +76,13 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- if eq .Values.config.jclouds.provider "filesystem" }}
           volumeMounts:
           - mountPath: {{ .Values.config.jclouds.filesystemBasedir }}
-            name: cache-volume  
-          {{- end }}            
-      {{- if eq .Values.config.jclouds.provider "filesystem" }}
+            name: tmp-volume
       volumes:
-      - name: cache-volume
+      - name: tmp-volume
         emptyDir:
-          sizeLimit: 500Mi            
-      {{- end }}
+          sizeLimit: {{ .Values.tmpSize | default "500Mi" }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

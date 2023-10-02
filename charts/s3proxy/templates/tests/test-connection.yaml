@@ -11,21 +11,21 @@ spec:
   securityContext:
     runAsNonRoot: true
     seccompProfile:
-      type: RuntimeDefault  
+      type: RuntimeDefault
   containers:
     {{- if eq .Values.config.jclouds.provider "filesystem" }}
     - name: init
       image: amazon/aws-cli:2.13.22
       command: ['bash']
-      args: 
+      args:
       - -c
       - aws s3api create-bucket --bucket test$(date +%s) --endpoint-url http://{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}
       # - aws
-      # - s3api 
-      # - create-bucket 
-      # - --bucket 
+      # - s3api
+      # - create-bucket
+      # - --bucket
       # - $
-      # - --endpoint-url 
+      # - --endpoint-url
       # - http://{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}
       env:
         - name: AWS_DEFAULT_REGION
@@ -34,23 +34,23 @@ spec:
           valueFrom:
             secretKeyRef:
               {{- if empty .Values.existingSecretName }}
-              name: "{{ include "s3proxy.fullname" . }}-secret"
+              name: "{{ include "s3proxy.fullname" . }}-awsclient"
               {{- else }}
               name: {{ .Values.existingSecretName }}
               {{- end }}
               key: AWS_ACCESS_KEY_ID
-              optional: false 
+              optional: false
         - name: AWS_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
               {{- if empty .Values.existingSecretName }}
-              name: "{{ include "s3proxy.fullname" . }}-secret"
+              name: "{{ include "s3proxy.fullname" . }}-awsclient"
               {{- else }}
               name: {{ .Values.existingSecretName }}
               {{- end }}
               key: AWS_SECRET_ACCESS_KEY
-              optional: false             
-      {{- end }}                          
+              optional: false
+      {{- end }}
       securityContext:
         runAsUser: 10001
         runAsGroup: 10001

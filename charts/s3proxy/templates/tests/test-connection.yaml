@@ -6,6 +6,11 @@ metadata:
     {{- include "s3proxy.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
+    checkov.io/skip1: CKV_K8S_8=Test container this is ok
+    checkov.io/skip2: CKV_K8S_9=Test container this is ok
+    checkov.io/skip3: CKV_K8S_15=Test container this is ok
+    checkov.io/skip4: CKV_K8S_35=Test container this is ok
+
 spec:
   automountServiceAccountToken: false
   securityContext:
@@ -56,7 +61,7 @@ spec:
               {{- end }}
               key: AWS_SECRET_ACCESS_KEY
               optional: false
-      {{- end }}
+    {{- end }}
     {{- if eq .Values.config.jclouds.provider "azureblob" }}
     - name: init
       #checkov:skip=CKV_K8S_43: Not for Public Charts

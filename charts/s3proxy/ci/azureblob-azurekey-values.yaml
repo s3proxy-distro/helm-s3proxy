@@ -24,7 +24,7 @@ config:
       # jclouds.credential
       # JCLOUDS_CREDENTIAL
       # This is the primary key from the account keys screen
-      #checkov:skip=CKV_SECRET_6: This is a doc string not a real secret
+      # checkov:skip=CKV_SECRET_6: This is a doc string not a real secret
       secretValue: thisisnotasecretonlyhereforlint
       # jclouds.credential
       # JCLOUDS_AZUREBLOB_ACCOUNT

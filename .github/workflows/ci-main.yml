@@ -48,12 +48,11 @@ jobs:
       - name: Run chart-testing (install)
         run: ct install --target-branch ${{ github.event.repository.default_branch }} --all
 
-  checkov:
+  checkov-gha:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -64,6 +63,42 @@ jobs:
           output_format: cli,sarif
           output_file_path: console,results.sarif
           quiet: true
+          framework: github_configuration
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+
+        # Results are generated only on a success or failure
+        # this is required since GitHub by default won't run the next step
+        # when the previous one has failed. Security checks that do not pass will 'fail'.
+        # An alternative is to add `continue-on-error: true` to the previous step
+        # Or 'soft_fail: true' to checkov.
+        if: success() || failure()
+        with:
+          sarif_file: results.sarif
+  checkov-helm:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+    strategy:
+      matrix:
+        values:
+          - filesystem
+          - azureblob-azurekey
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkov GitHub Action
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          # This will add both a CLI output to the console and create a results.sarif file
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
+          quiet: true
+          framework: helm
+          directory: charts/s3proxy
+          var_file: "${{ matrix.values }}-values.yaml"
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
@@ -78,12 +113,12 @@ jobs:
           sarif_file: results.sarif
 
 
-
   release:
     runs-on: ubuntu-latest
     needs:
       - lint-test
-      - checkov
+      - checkov-gha
+      - checkov-helm
     permissions:
       contents: write
       issues: write

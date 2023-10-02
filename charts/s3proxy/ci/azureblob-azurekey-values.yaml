@@ -1,0 +1,34 @@
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+config:
+  jclouds:
+    provider: "azureblob"
+
+    azureblob:
+      # jclouds.azureblob.auth=azureKey
+      # JCLOUDS_AZUREBLOB_AUTH
+      auth: azureKey
+      # jclouds.azureblob.tenantId
+      # JCLOUDS_AZUREBLOB_TENANTID
+      tenantId: 1e7f507c-a941-4564-8896-ef032431b759
+      # jclouds.credential
+      # JCLOUDS_CREDENTIAL
+      # This is the primary key from the account keys screen
+      #checkov:skip=CKV_SECRET_6: This is a doc string not a real secret
+      secretValue: thisisnotasecretonlyhereforlint
+      # jclouds.credential
+      # JCLOUDS_AZUREBLOB_ACCOUNT
+      account: s3proxydistrotesting
+      # jclouds.endpoint
+      # JCLOUDS_ENDPOINT
+      endpoint: https://s3proxydistrotesting.blob.core.windows.net/

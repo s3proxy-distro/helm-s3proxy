@@ -72,7 +72,7 @@ spec:
             - name: JCLOUDS_ENDPOINT
               value: {{ .Values.config.jclouds.azureblob.endpoint }}
             - name: JCLOUDS_IDENTITY
-              value: {{ .Values.config.jclouds.azureblob.appId }}
+              value: {{ .Values.config.jclouds.azureblob.account }}
             - name: JCLOUDS_CREDENTIAL
               valueFrom:
                 secretKeyRef:

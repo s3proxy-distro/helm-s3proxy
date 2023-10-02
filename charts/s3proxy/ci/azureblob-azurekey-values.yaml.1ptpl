@@ -25,10 +25,10 @@ config:
       # JCLOUDS_CREDENTIAL
       # This is the primary key from the account keys screen
       # checkov:skip=CKV_SECRET_6: This is a doc string not a real secret
-      secretValue: thisisnotasecretonlyhereforlint
+      secretValue: "op://github-s3proxy-distro/azureblob-azurekey/password"
       # jclouds.credential
       # JCLOUDS_AZUREBLOB_ACCOUNT
-      account: s3proxydistrotesting
+      account: "op://github-s3proxy-distro/azureblob-azurekey/username"
       # jclouds.endpoint
       # JCLOUDS_ENDPOINT
       endpoint: https://s3proxydistrotesting.blob.core.windows.net/

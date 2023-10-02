@@ -25,6 +25,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "s3proxy.serviceAccountName" . }}
+      automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -34,45 +35,58 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: LOG_LEVEL
+              value: debug
             - name: S3PROXY_ENDPOINT
               value: "http://0.0.0.0:{{ .Values.service.port }}"
             - name: S3PROXY_IDENTITY
               valueFrom:
                 secretKeyRef:
-      {{- if empty .Values.existingSecretName }}
+                  {{- if empty .Values.existingSecretName }}
                   name: "{{ include "s3proxy.fullname" . }}-secret"
-      {{- else }}
+                  {{- else }}
                   name: {{ .Values.existingSecretName }}
-      {{- end }}
+                  {{- end }}
                   key: AWS_ACCESS_KEY_ID
                   optional: false 
             - name: S3PROXY_CREDENTIAL
               valueFrom:
                 secretKeyRef:
-      {{- if empty .Values.existingSecretName }}
+                  {{- if empty .Values.existingSecretName }}
                   name: "{{ include "s3proxy.fullname" . }}-secret"
-      {{- else }}
+                  {{- else }}
                   name: {{ .Values.existingSecretName }}
-      {{- end }}
+                  {{- end }}
                   key: AWS_SECRET_ACCESS_KEY
                   optional: false       
-      {{- with .Values.env }}
+            {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
-      {{- end }}              
+            {{- end }}              
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if eq .Values.config.jclouds.provider "filesystem" }}
+          volumeMounts:
+          - mountPath: {{ .Values.config.jclouds.filesystemBasedir }}
+            name: cache-volume  
+          {{- end }}            
+      {{- if eq .Values.config.jclouds.provider "filesystem" }}
+      volumes:
+      - name: cache-volume
+        emptyDir:
+          sizeLimit: 500Mi            
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

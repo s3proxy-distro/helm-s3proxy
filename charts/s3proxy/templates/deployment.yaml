@@ -59,7 +59,35 @@ spec:
                   {{- end }}
                   key: AWS_SECRET_ACCESS_KEY
                   optional: false
-            {{- with .Values.env }}
+            - name: JCLOUDS_PROVIDER
+              value: {{ .Values.config.jclouds.provider }}
+            {{- if eq .Values.config.jclouds.provider "azureblob" }}
+            {{- if eq .Values.config.jclouds.azureblob.auth "azureKey" }}
+            - name: JCLOUDS_AZUREBLOB_AUTH
+              value: azureKey
+            - name: JCLOUDS_AZUREBLOB_TENANTID
+              value: {{ .Values.config.jclouds.azureblob.tenantId }}
+            - name: JCLOUDS_AZUREBLOB_ACCOUNT
+              value: {{ .Values.config.jclouds.azureblob.account }}
+            - name: JCLOUDS_ENDPOINT
+              value: {{ .Values.config.jclouds.azureblob.endpoint }}
+            - name: JCLOUDS_IDENTITY
+              value: {{ .Values.config.jclouds.azureblob.appId }}
+            - name: JCLOUDS_CREDENTIAL
+              valueFrom:
+                secretKeyRef:
+                  {{- if .Values.config.jclouds.azureblob.secretName }}
+                  name: {{ .Values.config.jclouds.azureblob.secretName }}
+                  {{- else }}
+                  name: "{{ include "s3proxy.fullname" . }}-azure"
+                  {{- end }}
+                  key: JCLOUDS_CREDENTIAL
+                  optional: false
+            {{- end }}
+            {{- end }}
+            - name: S3PROXY_V4_MAX_NON_CHUNKED_REQ_SIZE
+              value: "100000000"
+            {{- with .Values.config.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
@@ -77,12 +105,12 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          - mountPath: {{ .Values.config.jclouds.filesystemBasedir }}
+          - mountPath: {{ .Values.config.jclouds.filesystem.baseDir | default "/data" }}
             name: tmp-volume
       volumes:
       - name: tmp-volume
         emptyDir:
-          sizeLimit: {{ .Values.tmpSize | default "500Mi" }}
+          sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize | default "500Mi" }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

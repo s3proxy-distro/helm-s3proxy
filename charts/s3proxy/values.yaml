@@ -11,9 +11,10 @@ image:
   tag: ""
 
 config:
+  env: []
   jclouds:
     provider: "filesystem"
-    filesystemBasedir: "/data"
+    filesystem: {}
 
 imagePullSecrets: []
 nameOverride: ""

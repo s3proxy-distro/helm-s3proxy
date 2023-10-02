@@ -109,6 +109,7 @@ spec:
           - mountPath: {{ .Values.config.jclouds.filesystem.baseDir | default "/data" }}
             name: tmp-volume
       volumes:
+      {{- if eq .Values.config.jclouds.provider "filesystem" }}
       - name: tmp-volume
         emptyDir:
           sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize | default "500Mi" }}

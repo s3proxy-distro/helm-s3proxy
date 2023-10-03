@@ -81,7 +81,7 @@
     [
       "@semantic-release/exec",
       {
-        "publishCmd": "cr index --config .cr.yaml --push"
+        "publishCmd": "cr index --config .cr.yaml --push -t $GITHUB_TOKEN"
       }
     ]
   ]

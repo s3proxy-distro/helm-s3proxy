@@ -34,7 +34,7 @@
     [
       "@semantic-release/release-notes-generator",
       {
-        "preset": "angular",
+        "preset": "conventionalcommits",
         "parserOpts": {
           "noteKeywords": [
             "BREAKING CHANGE",
@@ -56,9 +56,13 @@
         "chartPath": "charts/s3proxy",
         "registry": "ghcr.io/s3proxy-distro/charts",
         "populateChangelog": false,
-        "onlyUpdateVersion": true,
-        "crPublish": true,
-        "crConfigPath": ".cr.yaml"
+        "onlyUpdateVersion": true
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "cr index --config .cr.yaml --push"
       }
     ],
     [

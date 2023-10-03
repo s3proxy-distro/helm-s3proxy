@@ -54,7 +54,7 @@
       "semantic-release-helm3",
       {
         "chartPath": "charts/s3proxy",
-        "registry": "ghcr.io/s3proxy-distro/helm/helm-s3proxy",
+        "registry": "https://ghcr.io/s3proxy-distro/helm/helm-s3proxy",
         "crPublish": false,
         "populateChangelog": false,
         "onlyUpdateVersion": true

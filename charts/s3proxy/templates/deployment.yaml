@@ -105,14 +105,17 @@ spec:
           #     port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- if eq .Values.config.jclouds.provider "filesystem" }}
           volumeMounts:
           - mountPath: {{ .Values.config.jclouds.filesystem.baseDir | default "/data" }}
             name: tmp-volume
-      volumes:
+          {{- end }}
       {{- if eq .Values.config.jclouds.provider "filesystem" }}
+      volumes:
       - name: tmp-volume
         emptyDir:
           sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize | default "500Mi" }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -129,6 +129,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      packages: write
     outputs:
       version: ${{ steps.version.outputs.new_release_version }}
     steps:

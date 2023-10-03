@@ -19,13 +19,13 @@ spec:
       type: RuntimeDefault
   containers:
     {{- if eq .Values.config.jclouds.provider "filesystem" }}
-    - name: init
+    - name: test
       #checkov:skip=CKV_K8S_43: Not for Public Charts
       image: amazon/aws-cli:2.13.22
       command: ['bash']
       args:
       - -c
-      - aws s3api create-bucket --bucket test$(date +%s) --endpoint-url http://{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}
+      - sleep 10;aws s3api create-bucket --bucket test$(date +%s) --endpoint-url http://{{ include "s3proxy.fullname" . }}:{{ .Values.service.port }}
       resources:
         # We usually recommend not to specify default resources and to leave this as a conscious
         # choice for the user. This also increases chances charts run on environments with little
@@ -63,7 +63,7 @@ spec:
               optional: false
     {{- end }}
     {{- if eq .Values.config.jclouds.provider "azureblob" }}
-    - name: init
+    - name: test
       #checkov:skip=CKV_K8S_43: Not for Public Charts
       image: amazon/aws-cli:2.13.22
       command: ['bash']

@@ -37,14 +37,36 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ['java']
           args:
+          - -Ds3proxy.identity="$(AWS_ACCESS_KEY_ID)"
+          - -Ds3proxy.credential="$(AWS_SECRET_ACCESS_KEY)"
           - -jar
           - /opt/s3proxy/s3proxy
           - --properties
           - /etc/s3proxy/s3proxy.properties
           env:
-            {{- with .Values.config.env }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_ACCESS_KEY_ID
+                optional: false
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_SECRET_ACCESS_KEY
+                optional: false
+          {{- with .Values.config.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -60,8 +82,10 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
+          {{- if eq .Values.config.jclouds.provider "filesystem" }}
           - mountPath: {{ .Values.config.jclouds.filesystem.baseDir }}
             name: tmp-volume
+          {{- end }}
           - name: secret-volume
             readOnly: true
             mountPath: "/etc/s3proxy"
@@ -70,6 +94,7 @@ spec:
       - name: tmp-volume
         emptyDir:
           sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize }}
+      {{- end }}
       - name: secret-volume
         secret:
           secretName: {{ include "s3proxy.fullname" . }}

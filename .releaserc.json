@@ -25,10 +25,10 @@
       }
     ],
     [
-      "@semantic-release/exec",
+      "semantic-release-helm3",
       {
-        "prepareCmd": "./.github/workflows/scripts/prepareHelm.sh ${nextRelease.version}",
-        "publishCmd": "./.github/workflows/scripts/publishHelm.sh ${nextRelease.version}"
+        "chartPath": "charts/s3proxy",
+        "populateChangelog": true
       }
     ],
     [

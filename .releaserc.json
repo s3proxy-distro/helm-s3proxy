@@ -55,18 +55,9 @@
       {
         "chartPath": "charts/s3proxy",
         "registry": "ghcr.io/s3proxy-distro/charts",
-        "crPublish": false,
-        "populateChangelog": false,
-        "onlyUpdateVersion": true
-      }
-    ],
-    [
-      "semantic-release-helm3",
-      {
-        "chartPath": "charts/s3proxy",
-        "crPublish": true,
         "populateChangelog": false,
         "onlyUpdateVersion": true,
+        "crPublish": true,
         "crConfigPath": ".cr.yaml"
       }
     ],

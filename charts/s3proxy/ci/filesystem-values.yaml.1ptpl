@@ -9,20 +9,3 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
-
-
-config:
-  env: []
-  s3proxy:
-    authorization: aws-v2-or-v4
-    ignoreUnknownHeaders: false
-    # For some usages this might need to be higher
-    # 100000000 high
-    # 33554432 low
-    v4MaxNonChunkedRequestSize: "33554432"
-    readOnlyBlobStore: false
-  jclouds:
-    provider: "filesystem"
-    filesystem:
-      baseDir: /data
-      tmpSize: 500Mi

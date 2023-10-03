@@ -61,6 +61,15 @@
       }
     ],
     [
+      "semantic-release-helm3",
+      {
+        "chartPath": "charts/s3proxy",
+        "crPublish": true,
+        "populateChangelog": false,
+        "onlyUpdateVersion": true
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [

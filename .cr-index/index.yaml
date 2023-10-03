@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  s3proxy:
+  - apiVersion: v2
+    appVersion: v2.1.1_1.1.2
+    created: "2023-10-03T13:09:42.141055-04:00"
+    description: Deployment for s3proxy
+    digest: b2b72bdb1fa9b604250649ebde9b179ba38fe5d8dccb9ddc0c4cab9ca3405b8c
+    maintainers:
+    - name: ryanfaircloth
+    name: s3proxy
+    sources:
+    - https://github.com/s3proxy-distro/helm-s3proxy
+    - https://github.com/s3proxy-distro/container-s3proxy
+    type: application
+    urls:
+    - https://github.com/s3proxy-distro/helm-s3proxy/releases/download/v1.1.1-next.11/s3proxy-1.1.1-next.11.tgz
+    version: 1.1.1-next.11
+generated: "2023-10-03T13:09:42.141059-04:00"

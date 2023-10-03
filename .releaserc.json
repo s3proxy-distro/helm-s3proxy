@@ -56,7 +56,7 @@
         "chartPath": "charts/s3proxy",
         "registry": "ghcr.io/s3proxy-distro/helm/helm-s3proxy",
         "crPublish": false,
-        "populateChangelog": true,
+        "populateChangelog": false,
         "onlyUpdateVersion": true
       }
     ],

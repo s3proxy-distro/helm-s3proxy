@@ -2,3 +2,5 @@ owner: s3proxy-distro
 git-repo: helm-s3proxy
 package-path: .
 release-name-template: v{{ .Version }}
+skip-existing: true
+make-release-latest: false

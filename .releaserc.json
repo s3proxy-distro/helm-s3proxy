@@ -21,14 +21,39 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventionalcommits"
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "angular",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        },
+        "writerOpts": {
+          "commitsSort": [
+            "subject",
+            "scope"
+          ]
+        }
       }
     ],
     [
       "semantic-release-helm3",
       {
         "chartPath": "charts/s3proxy",
-        "registry": "ghcr.io/s3proxy-distro/containers/helm-s3proxy",
         "crPublish": false,
         "populateChangelog": true,
         "onlyUpdateVersion": true

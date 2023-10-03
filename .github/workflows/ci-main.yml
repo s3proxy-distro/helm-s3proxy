@@ -140,6 +140,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
+        with:
+          install_only: true
       - name: Semantic Release
         id: version
         uses: cycjimmy/semantic-release-action@v4

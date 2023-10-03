@@ -147,7 +147,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REGISTRY_HOST: ghcr.io
-          REGISTRY_USERNAME: USERNAME
+          REGISTRY_USERNAME: ${{ github.actor }}
           REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         with:
           semantic_version: 19.0.5

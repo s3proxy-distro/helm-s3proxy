@@ -4,6 +4,8 @@ metadata:
   name: {{ include "s3proxy.fullname" . }}
   labels:
     {{- include "s3proxy.labels" . | nindent 4 }}
+  annotations:
+    checkov.io/skip1: CKV_K8S_35=Inorder to use a generated secret in two ways we can't do this
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -37,11 +39,33 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ['java']
           args:
+          - -Ds3proxy.identity=$(S3PROXY_IDENTITY)
+          - -Ds3proxy.credential=$(S3PROXY_CREDENTIAL)
           - -jar
           - /opt/s3proxy/s3proxy
           - --properties
           - /etc/s3proxy/s3proxy.properties
           env:
+          - name: S3PROXY_IDENTITY
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_ACCESS_KEY_ID
+                optional: false
+          - name: S3PROXY_CREDENTIAL
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_SECRET_ACCESS_KEY
+                optional: false
             {{- with .Values.config.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

@@ -21,14 +21,49 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "conventionalcommits"
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES",
+            "BREAKING"
+          ]
+        },
+        "writerOpts": {
+          "commitsSort": [
+            "subject",
+            "scope"
+          ]
+        }
+      }
+    ],
+    [
+      "semantic-release-helm3",
+      {
+        "chartPath": "charts/s3proxy",
+        "registry": "ghcr.io/s3proxy-distro/charts",
+        "populateChangelog": false,
+        "onlyUpdateVersion": true
       }
     ],
     [
       "@semantic-release/git",
       {
         "assets": [
-          "chart/Chart.yaml"
+          "charts/s3proxy/Chart.yaml"
         ],
         "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
       }
@@ -41,6 +76,12 @@
             "path": "*.tgz"
           }
         ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "cr index --config .cr.yaml --push -t $GITHUB_TOKEN"
       }
     ]
   ]

@@ -35,62 +35,38 @@ spec:
           #checkov:skip=CKV_K8S_43: Not for Public Charts
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['java']
+          args:
+          - -Ds3proxy.identity="$(AWS_ACCESS_KEY_ID)"
+          - -Ds3proxy.credential="$(AWS_SECRET_ACCESS_KEY)"
+          - -jar
+          - /opt/s3proxy/s3proxy
+          - --properties
+          - /etc/s3proxy/s3proxy.properties
           env:
-            - name: LOG_LEVEL
-              value: {{ .Values.logLevel | default "info" }}
-            - name: S3PROXY_ENDPOINT
-              value: "http://0.0.0.0:{{ .Values.service.port }}"
-            - name: S3PROXY_IDENTITY
-              valueFrom:
-                secretKeyRef:
-                  {{- if empty .Values.existingSecretName }}
-                  name: "{{ include "s3proxy.fullname" . }}-awsclient"
-                  {{- else }}
-                  name: {{ .Values.existingSecretName }}
-                  {{- end }}
-                  key: AWS_ACCESS_KEY_ID
-                  optional: false
-            - name: S3PROXY_CREDENTIAL
-              valueFrom:
-                secretKeyRef:
-                  {{- if empty .Values.existingSecretName }}
-                  name: "{{ include "s3proxy.fullname" . }}-awsclient"
-                  {{- else }}
-                  name: {{ .Values.existingSecretName }}
-                  {{- end }}
-                  key: AWS_SECRET_ACCESS_KEY
-                  optional: false
-            - name: JCLOUDS_PROVIDER
-              value: {{ .Values.config.jclouds.provider }}
-            {{- if eq .Values.config.jclouds.provider "azureblob" }}
-            {{- if eq .Values.config.jclouds.azureblob.auth "azureKey" }}
-            - name: JCLOUDS_AZUREBLOB_AUTH
-              value: azureKey
-            - name: JCLOUDS_AZUREBLOB_TENANTID
-              value: {{ .Values.config.jclouds.azureblob.tenantId }}
-            - name: JCLOUDS_AZUREBLOB_ACCOUNT
-              value: {{ .Values.config.jclouds.azureblob.account }}
-            - name: JCLOUDS_ENDPOINT
-              value: {{ .Values.config.jclouds.azureblob.endpoint }}
-            - name: JCLOUDS_IDENTITY
-              value: {{ .Values.config.jclouds.azureblob.account }}
-            - name: JCLOUDS_CREDENTIAL
-              valueFrom:
-                secretKeyRef:
-                  {{- if .Values.config.jclouds.azureblob.secretName }}
-                  name: {{ .Values.config.jclouds.azureblob.secretName }}
-                  {{- else }}
-                  name: "{{ include "s3proxy.fullname" . }}-azure"
-                  {{- end }}
-                  key: JCLOUDS_CREDENTIAL
-                  optional: false
-            {{- end }}
-            {{- end }}
-            - name: S3PROXY_V4_MAX_NON_CHUNKED_REQ_SIZE
-              value: "100000000"
-            {{- with .Values.config.env }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_ACCESS_KEY_ID
+                optional: false
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                {{- if empty .Values.existingSecretName }}
+                name: "{{ include "s3proxy.fullname" . }}-awsclient"
+                {{- else }}
+                name: {{ .Values.existingSecretName }}
+                {{- end }}
+                key: AWS_SECRET_ACCESS_KEY
+                optional: false
+          {{- with .Values.config.env }}
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -106,12 +82,22 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-          - mountPath: {{ .Values.config.jclouds.filesystem.baseDir | default "/data" }}
+          {{- if eq .Values.config.jclouds.provider "filesystem" }}
+          - mountPath: {{ .Values.config.jclouds.filesystem.baseDir }}
             name: tmp-volume
+          {{- end }}
+          - name: secret-volume
+            readOnly: true
+            mountPath: "/etc/s3proxy"
       volumes:
+      {{- if eq .Values.config.jclouds.provider "filesystem" }}
       - name: tmp-volume
         emptyDir:
-          sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize | default "500Mi" }}
+          sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize }}
+      {{- end }}
+      - name: secret-volume
+        secret:
+          secretName: {{ include "s3proxy.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

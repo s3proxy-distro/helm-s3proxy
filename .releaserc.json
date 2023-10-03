@@ -60,12 +60,6 @@
       }
     ],
     [
-      "@semantic-release/exec",
-      {
-        "publishCmd": "cr index --config .cr.yaml --push"
-      }
-    ],
-    [
       "@semantic-release/git",
       {
         "assets": [
@@ -82,6 +76,12 @@
             "path": "*.tgz"
           }
         ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "cr index --config .cr.yaml --push"
       }
     ]
   ]

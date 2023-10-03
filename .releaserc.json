@@ -28,7 +28,10 @@
       "semantic-release-helm3",
       {
         "chartPath": "charts/s3proxy",
-        "populateChangelog": true
+        "registry": "ghcr.io/s3proxy-distro/containers/helm-s3proxy",
+        "crPublish": false,
+        "populateChangelog": true,
+        "onlyUpdateVersion": true
       }
     ],
     [
@@ -41,14 +44,7 @@
       }
     ],
     [
-      "@semantic-release/github",
-      {
-        "assets": [
-          {
-            "path": "*.tgz"
-          }
-        ]
-      }
+      "@semantic-release/github"
     ]
   ]
 }

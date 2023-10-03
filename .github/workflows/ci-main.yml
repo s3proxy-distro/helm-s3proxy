@@ -139,11 +139,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
+
       - name: Semantic Release
         id: version
         uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_HOST: ghcr.io
+          REGISTRY_USERNAME: USERNAME
+          REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         with:
           semantic_version: 19.0.5
           extra_plugins: |

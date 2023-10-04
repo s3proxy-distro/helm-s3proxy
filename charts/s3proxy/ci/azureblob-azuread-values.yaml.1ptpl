@@ -18,11 +18,16 @@ config:
       # jclouds.azureblob.auth=azureKey
       # JCLOUDS_AZUREBLOB_AUTH
       auth: azureKey
+      # jclouds.azureblob.tenantId
+      # JCLOUDS_AZUREBLOB_TENANTID
+      tenantId: 1e7f507c-a941-4564-8896-ef032431b759
+      # jclouds.identity
+      appId: "op://github-s3proxy-distro/azureblob-azuread/username"
       # jclouds.credential
       # JCLOUDS_CREDENTIAL
       # This is the primary key from the account keys screen
       # checkov:skip=CKV_SECRET_6: This is a doc string not a real secret
-      secretValue: "op://github-s3proxy-distro/azureblob-azurekey/password"
+      secretValue: ""op://github-s3proxy-distro/azureblob-azuread/password""
       # jclouds.credential
       # JCLOUDS_AZUREBLOB_ACCOUNT
       account: "op://github-s3proxy-distro/azureblob-account/username"

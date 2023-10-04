@@ -1,6 +1,27 @@
 apiVersion: v2
 name: s3proxy
-description: Deployment for s3proxy
+description: |
+
+  [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
+
+  Deployment for s3proxy based on the s3proxy-distro fork (from this org). This helm chart helps quickly and correctly
+  deploy and confidently by adding integration testing through ci.
+
+  ## Install
+
+  ## Using OCI registry
+
+  ```bash
+  helm login ghcr.io
+  helm pull oci://ghcr.io/s3proxy-distro/charts/s3proxy --version ^1.0.0
+  ```
+
+  ## Using Chart Repo
+
+  ```bash
+  helm repo add s3proxy https://s3proxy-distro.github.io/helm-s3proxy
+  helm upgrade --install releasname -f values s3proxy/s3proxy
+  ```
 
 # A chart can be either an 'application' or a 'library' chart.
 #

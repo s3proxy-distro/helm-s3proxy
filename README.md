@@ -2,7 +2,26 @@
 
 ![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.2](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.2-informational?style=flat-square)
 
-Deployment for s3proxy
+[![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
+
+Deployment for s3proxy based on the s3proxy-distro fork (from this org). This helm chart helps quickly and correctly
+deploy and confidently by adding integration testing through ci.
+
+## Install
+
+## Using OCI registry
+
+```bash
+helm login ghcr.io
+helm pull oci://ghcr.io/s3proxy-distro/charts/s3proxy --version ^1.0.0
+```
+
+## Using Chart Repo
+
+```bash
+helm repo add s3proxy https://s3proxy-distro.github.io/helm-s3proxy
+helm upgrade --install releasname -f values s3proxy/s3proxy
+```
 
 ## Maintainers
 

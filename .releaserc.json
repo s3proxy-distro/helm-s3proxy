@@ -60,10 +60,17 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "docker run --rm --volume \"$(pwd):/helm-docs\" -u $(id -u) jnorwood/helm-docs:latest -o ../../README.md"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": [
-          "charts/s3proxy/Chart.yaml"
+          "README.md",
+          "chart/Chart.yaml"
         ],
         "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
       }

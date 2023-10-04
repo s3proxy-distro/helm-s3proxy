@@ -23,6 +23,7 @@ version: 0.1.0
 # It is recommended to use it with quotes.
 appVersion: "v2.1.1_1.1.2"
 sources:
+  - https://github.com/s3proxy-distro/s3proxy
   - https://github.com/s3proxy-distro/helm-s3proxy
   - https://github.com/s3proxy-distro/container-s3proxy
 maintainers:

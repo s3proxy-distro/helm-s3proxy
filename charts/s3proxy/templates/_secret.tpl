@@ -15,7 +15,6 @@ jclouds.filesystem.basedir={{ .Values.config.jclouds.filesystem.baseDir }}
 {{- if eq .Values.config.jclouds.provider "azureblob" }}
 jclouds.azureblob.auth={{ .Values.config.jclouds.azureblob.auth }}
 jclouds.endpoint={{ .Values.config.jclouds.azureblob.endpoint }}
-jclouds.azureblob.tenantId={{ .Values.config.jclouds.azureblob.tenantId }}
 jclouds.azureblob.account={{ .Values.config.jclouds.azureblob.account }}
     {{- if eq .Values.config.jclouds.azureblob.auth "azureKey" }}
 jclouds.identity={{ .Values.config.jclouds.azureblob.account }}
@@ -23,8 +22,22 @@ jclouds.identity={{ .Values.config.jclouds.azureblob.account }}
             {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.config.jclouds.azureblob.secretName) | default dict }}
             {{- $secretData := (get $secretObj "data") | default dict }}
             {{- $access_secret := (get $secretData "JCLOUDS_CREDENTIAL") }}
-            {{- $access_secret }}
+jclouds.credential={{- $access_secret }}
         {{- else }}
+jclouds.credential={{ .Values.config.jclouds.azureblob.secretValue }}
+        {{- end }}
+    {{- end }}
+    {{- if eq .Values.config.jclouds.azureblob.auth "azureAd" }}
+jclouds.azureblob.tenantId={{ .Values.config.jclouds.azureblob.tenantId }}
+        {{- if .Values.config.jclouds.azureblob.secretName }}
+            {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace .Values.config.jclouds.azureblob.secretName) | default dict }}
+            {{- $secretData := (get $secretObj "data") | default dict }}
+            {{- $access_identity := (get $secretData "JCLOUDS_IDENTITY") }}
+            {{- $access_secret := (get $secretData "JCLOUDS_CREDENTIAL") }}
+jclouds.identity={{- $access_identity }}
+jclouds.credential={{- $access_secret }}
+        {{- else }}
+jclouds.identity={{ .Values.config.jclouds.azureblob.appId }}
 jclouds.credential={{ .Values.config.jclouds.azureblob.secretValue }}
         {{- end }}
     {{- end }}

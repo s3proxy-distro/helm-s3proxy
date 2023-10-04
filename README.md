@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.2.1-next.1](https://img.shields.io/badge/Version-1.2.1--next.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.2](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.2-informational?style=flat-square)
+![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.2](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.2-informational?style=flat-square)
 
 Deployment for s3proxy
 

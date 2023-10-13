@@ -66,9 +66,9 @@ spec:
                 {{- end }}
                 key: AWS_SECRET_ACCESS_KEY
                 optional: false
-            {{- with .Values.config.env }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+          {{- with .Values.config.env }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

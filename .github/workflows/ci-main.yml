@@ -39,7 +39,7 @@ jobs:
           check-latest: true
 
       - name: Set up chart-testing
-        uses: helm/chart-testing-action@v2.4.0
+        uses: helm/chart-testing-action@v2.6.1
 
       - name: inject secrets
         run: find charts/s3proxy/ci/ -type f -name "*.1ptpl" -exec bash -c 'op inject -f -i $1 -o ${1%.*}' bash {} \;

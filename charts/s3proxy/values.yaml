@@ -10,6 +10,16 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
+command:
+  - java
+args:
+  - -Ds3proxy.identity=$(S3PROXY_IDENTITY)
+  - -Ds3proxy.credential=$(S3PROXY_CREDENTIAL)
+  - -jar
+  - /opt/s3proxy/s3proxy
+  - --properties
+  - /etc/s3proxy/s3proxy.properties
+
 config:
   env: []
   s3proxy:

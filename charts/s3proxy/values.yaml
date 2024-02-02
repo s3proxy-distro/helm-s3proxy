@@ -3,7 +3,9 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
+labels: {}
+podLabels:
+  test: "true"
 image:
   repository: ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin-11
   pullPolicy: IfNotPresent

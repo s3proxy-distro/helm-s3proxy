@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.4.0-next.3](https://img.shields.io/badge/Version-1.4.0--next.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
+![Version: 1.4.0-next.4](https://img.shields.io/badge/Version-1.4.0--next.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
 
 [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
 
@@ -72,9 +72,11 @@ helm upgrade --install releasname -f values s3proxy/s3proxy
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
+| labels | object | `{}` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | podAnnotations | object | `{}` |  |
+| podLabels.test | string | `"true"` |  |
 | podSecurityContext.fsGroup | int | `10001` |  |
 | podSecurityContext.fsGroupChangePolicy | string | `"OnRootMismatch"` |  |
 | podSecurityContext.runAsGroup | int | `10001` |  |

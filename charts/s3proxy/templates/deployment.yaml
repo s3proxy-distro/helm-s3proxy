@@ -95,7 +95,11 @@ spec:
       {{- end }}
       - name: secret-volume
         secret:
+      {{- if .Values.existingPropertiesSecret }}
+          secretName: {{ .Values.existingPropertiesSecret }}
+      {{ else }}
           secretName: {{ include "s3proxy.fullname" . }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

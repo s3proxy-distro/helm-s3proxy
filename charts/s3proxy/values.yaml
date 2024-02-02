@@ -20,6 +20,7 @@ args:
   - --properties
   - /etc/s3proxy/s3proxy.properties
 
+csiSecret: {}
 config:
   env: []
   s3proxy:

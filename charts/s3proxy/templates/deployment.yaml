@@ -21,6 +21,9 @@ spec:
       {{- end }}
       labels:
         {{- include "s3proxy.selectorLabels" . | nindent 8 }}
+        {{- with .Values.podLabels -}}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -94,8 +97,20 @@ spec:
           sizeLimit: {{ .Values.config.jclouds.filesystem.tmpSize }}
       {{- end }}
       - name: secret-volume
+        {{- if .Values.csiSecret.enabled }}
+        csi:
+          driver: {{ .Values.csiSecret.driver | default "secrets-store.csi.k8s.io" }}
+          readOnly: {{ .Values.csiSecret.readOnly | default true }}
+          volumeAttributes:
+            secretProviderClass: {{ .Values.csiSecret.class }}
+        {{ else }}
         secret:
+      {{- if .Values.existingPropertiesSecret }}
+          secretName: {{ .Values.existingPropertiesSecret }}
+      {{ else }}
           secretName: {{ include "s3proxy.fullname" . }}
+      {{- end }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -106,5 +121,9 @@ spec:
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}

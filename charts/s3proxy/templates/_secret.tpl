@@ -1,4 +1,5 @@
 {{- define "s3proxy.properties" -}}
+{{- if and (not .Values.existingPropertiesSecret) (not .Values.csiSecret.enabled) }}
 LOG_LEVEL={{ .Values.logLevel | default "info" }}
 #General config
 s3proxy.authorization={{ .Values.config.s3proxy.authorization }}
@@ -43,4 +44,5 @@ jclouds.credential={{ .Values.config.jclouds.azureblob.secretValue }}
     {{- end }}
 {{- end }}
 jclouds.region=us-east-1
+{{- end }}
 {{- end }}

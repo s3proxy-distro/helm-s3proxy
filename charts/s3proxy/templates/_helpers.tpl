@@ -48,6 +48,12 @@ Selector labels
 {{- define "s3proxy.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "s3proxy.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- with .Values.labels -}}
+{{ toYaml . | nindent 0 }}
+{{- end }}
+{{- end }}
+
+{{/*
 {{- end }}
 
 {{/*

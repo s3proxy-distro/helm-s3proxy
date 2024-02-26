@@ -3,7 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
+labels: {}
+podLabels: {}
 image:
   repository: ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin-11
   pullPolicy: IfNotPresent
@@ -20,6 +21,7 @@ args:
   - --properties
   - /etc/s3proxy/s3proxy.properties
 
+csiSecret: {}
 config:
   env: []
   s3proxy:
@@ -112,3 +114,5 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+topologySpreadConstraints: {}

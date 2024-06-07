@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.4.0-next.7](https://img.shields.io/badge/Version-1.4.0--next.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
 
 [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
 

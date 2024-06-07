@@ -1,7 +1,7 @@
 # Default values for s3proxy.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-DeploymentMode: Deployment
+deploymentMode: Deployment
 replicaCount: 1
 labels: {}
 podLabels: {}

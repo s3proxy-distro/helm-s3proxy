@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.4.0-next.5](https://img.shields.io/badge/Version-1.4.0--next.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
+![Version: 1.4.0-next.6](https://img.shields.io/badge/Version-1.4.0--next.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
 
 [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
 
@@ -89,6 +89,7 @@ helm upgrade --install releasname -f values s3proxy/s3proxy
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
+| service.internalTrafficPolicy | string | `"Cluster"` |  |
 | service.port | int | `8080` |  |
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |

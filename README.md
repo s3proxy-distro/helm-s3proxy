@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.4.0-next.6](https://img.shields.io/badge/Version-1.4.0--next.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
+![Version: 1.4.0-next.7](https://img.shields.io/badge/Version-1.4.0--next.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
 
 [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
 
@@ -39,7 +39,6 @@ helm upgrade --install releasname -f values s3proxy/s3proxy
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| DeploymentMode | string | `"Deployment"` |  |
 | affinity | object | `{}` |  |
 | args[0] | string | `"-Ds3proxy.identity=$(S3PROXY_IDENTITY)"` |  |
 | args[1] | string | `"-Ds3proxy.credential=$(S3PROXY_CREDENTIAL)"` |  |
@@ -61,6 +60,7 @@ helm upgrade --install releasname -f values s3proxy/s3proxy
 | config.s3proxy.readOnlyBlobStore | bool | `false` |  |
 | config.s3proxy.v4MaxNonChunkedRequestSize | string | `"33554432"` |  |
 | csiSecret | object | `{}` |  |
+| deploymentMode | string | `"Deployment"` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin-11"` |  |

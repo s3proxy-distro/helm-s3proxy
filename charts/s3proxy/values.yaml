@@ -1,7 +1,7 @@
 # Default values for s3proxy.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+deploymentMode: Deployment
 replicaCount: 1
 labels: {}
 podLabels: {}
@@ -50,6 +50,7 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+  automountServiceAccountToken: false
 
 podAnnotations: {}
 
@@ -71,6 +72,7 @@ securityContext:
 service:
   type: ClusterIP
   port: 8080
+  internalTrafficPolicy: Cluster
 
 ingress:
   enabled: false

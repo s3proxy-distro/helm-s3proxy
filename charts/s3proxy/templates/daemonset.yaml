@@ -1,6 +1,6 @@
-{{ if eq .Values.deploymentMode "Deployment" }}
+{{ if eq .Values.deploymentMode "DaemonSet" }}
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: {{ include "s3proxy.fullname" . }}
   labels:
@@ -8,9 +8,6 @@ metadata:
   annotations:
     checkov.io/skip1: CKV_K8S_35=Inorder to use a generated secret in two ways we can't do this
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "s3proxy.selectorLabels" . | nindent 6 }}

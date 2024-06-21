@@ -6,7 +6,7 @@ replicaCount: 1
 labels: {}
 podLabels: {}
 image:
-  repository: ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin-11
+  repository: ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""

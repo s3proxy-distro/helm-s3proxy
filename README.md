@@ -1,6 +1,6 @@
 # s3proxy
 
-![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v2.1.1_1.1.3](https://img.shields.io/badge/AppVersion-v2.1.1_1.1.3-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: s3proxy-2.2.0_main](https://img.shields.io/badge/AppVersion-s3proxy--2.2.0_main-informational?style=flat-square)
 
 [![Main CI](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml/badge.svg)](https://github.com/s3proxy-distro/helm-s3proxy/actions/workflows/ci-main.yml)
 
@@ -63,7 +63,7 @@ helm upgrade --install releasname -f values s3proxy/s3proxy
 | deploymentMode | string | `"Deployment"` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin-11"` |  |
+| image.repository | string | `"ghcr.io/s3proxy-distro/containers/container-s3proxy-eclipse-temurin"` |  |
 | image.tag | string | `""` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |
